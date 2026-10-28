@@ -4,12 +4,11 @@ ARG TARGETOS
 ARG TARGETARCH
 WORKDIR /build
 RUN apk --no-cache add git
-# Pin xk6 to last Go-1.25-compatible release; xk6 >=v1.4.13 requires Go 1.26 (ISI-6772 CI fix / C1 flag)
 RUN CGO_ENABLED=0 go install go.k6.io/xk6/cmd/xk6@v1.4.12
-RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} xk6 build \
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} xk6 build v1.6.1 \
     --output /k6 \
-    --with github.com/henrikrexed/henrikrexed-xk6-output-opentelemetry@latest \
-    --with github.com/Dynatrace/xk6-output-dynatrace@latest
+    --with github.com/henrikrexed/henrikrexed-xk6-output-opentelemetry@v0.1.1 \
+    --with github.com/Dynatrace/xk6-output-dynatrace@v0.0.0-20260512084219-1a8de5fabe60
 
 FROM alpine:3.21
 RUN apk --no-cache add ca-certificates && \

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: load-generator
-          image: ghcr.io/henrikrexed/opentelemetry-demo-light/load-generator-dynatrace:latest
+          image: ghcr.io/henrikrexed/opentelemetry-demo-light/load-generator-dynatrace:0.1.0
           env:
             - name: FRONTEND_URL
               value: http://frontend:8080
