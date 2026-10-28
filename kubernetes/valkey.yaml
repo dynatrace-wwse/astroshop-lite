@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: valkey
-          image: valkey/valkey:7-alpine
+          image: valkey/valkey:8-alpine
           command: ["valkey-server", "--save", "", "--appendonly", "no", "--maxmemory", "16mb", "--maxmemory-policy", "allkeys-lru"]
           ports:
             - containerPort: 6379
