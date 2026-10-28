@@ -30,7 +30,7 @@ gateway:
 
 # Infrastructure
 postgres:
-  image: postgres:16-alpine
+  image: postgres:17-alpine
   replicas: 1
   user: otel
   password: otel
@@ -41,7 +41,7 @@ postgres:
       memory: 40Mi
 
 valkey:
-  image: valkey/valkey:7-alpine
+  image: valkey/valkey:8-alpine
   replicas: 1
   resources:
     limits:
