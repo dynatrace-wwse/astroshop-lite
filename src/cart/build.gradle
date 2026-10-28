@@ -32,7 +32,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.11.0'
 
     // OTel API for custom metrics only (no manual instrumentation in business logic)
-    implementation 'io.opentelemetry:opentelemetry-api:1.46.0'
+    implementation 'io.opentelemetry:opentelemetry-api:1.51.0'
 
     // Required for protobuf generated code
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
