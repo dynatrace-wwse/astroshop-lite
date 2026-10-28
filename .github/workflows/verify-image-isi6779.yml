@@ -6,7 +6,7 @@ permissions:
   contents: read
   packages: write
 jobs:
-  build-payment:
+  build-checkout:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,9 +20,9 @@ jobs:
       - name: Build and push verify image
         uses: docker/build-push-action@v5
         with:
-          context: src/payment
+          context: src/checkout
           push: true
           platforms: linux/amd64
-          tags: ghcr.io/henrikrexed/opentelemetry-demo-light/payment:isi6779-verify
+          tags: ghcr.io/henrikrexed/opentelemetry-demo-light/checkout:isi6779-verify
           cache-from: type=gha
           cache-to: type=gha,mode=max
