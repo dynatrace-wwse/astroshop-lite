@@ -4,7 +4,8 @@ ARG TARGETOS
 ARG TARGETARCH
 WORKDIR /build
 RUN apk --no-cache add git
-RUN CGO_ENABLED=0 go install go.k6.io/xk6/cmd/xk6@latest
+# Pin xk6 to last Go-1.25-compatible release; xk6 >=v1.4.13 requires Go 1.26 (ISI-6772 CI fix / C1 flag)
+RUN CGO_ENABLED=0 go install go.k6.io/xk6/cmd/xk6@v1.4.12
 RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} xk6 build \
     --output /k6 \
     --with github.com/henrikrexed/henrikrexed-xk6-output-opentelemetry@latest \
