@@ -1,0 +1,28 @@
+name: Verify image ISI-6779
+on:
+  push:
+    branches: [verify/isi-6779-image]
+permissions:
+  contents: read
+  packages: write
+jobs:
+  build-cart:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push verify image
+        uses: docker/build-push-action@v5
+        with:
+          context: src/cart
+          push: true
+          platforms: linux/amd64
+          tags: ghcr.io/henrikrexed/opentelemetry-demo-light/cart:isi6779-verify
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
