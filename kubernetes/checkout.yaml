@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: checkout
-          image: otel-demo-light/checkout:latest
+          image: ghcr.io/henrikrexed/opentelemetry-demo-light/checkout:0.0.13
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5050
