@@ -6,9 +6,11 @@ protobuf>=6.30.0,<7.0dev
 psycopg2-binary==2.9.10
 
 # OTel auto-instrumentation
-opentelemetry-api==1.40.0
-opentelemetry-sdk==1.40.0
-opentelemetry-exporter-otlp==1.40.0
-opentelemetry-instrumentation-grpc==0.61b0
-opentelemetry-instrumentation-psycopg2==0.61b0
-opentelemetry-distro==0.61b0
+# Stable + prerelease packages kept in lockstep: core 1.45.1 pairs with
+# instrumentation/distro 0.66b1 (ISI-6772, Workstream A A2).
+opentelemetry-api==1.45.1
+opentelemetry-sdk==1.45.1
+opentelemetry-exporter-otlp==1.45.1
+opentelemetry-instrumentation-grpc==0.66b1
+opentelemetry-instrumentation-psycopg2==0.66b1
+opentelemetry-distro==0.66b1
