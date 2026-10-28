@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: load-generator
-          image: ghcr.io/henrikrexed/henrikrexed-xk6-output-opentelemetry:latest
+          image: ghcr.io/henrikrexed/henrikrexed-xk6-output-opentelemetry:0.1.1
           args:
             - run
             - --out
