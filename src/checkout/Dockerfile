@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.13-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget && \
@@ -15,7 +15,7 @@ COPY . .
 RUN python -m grpc_tools.protoc -Iproto --python_out=. --grpc_python_out=. proto/demo.proto
 
 # Download grpc_health_probe
-RUN GRPC_HEALTH_PROBE_VERSION=v0.4.25 && \
+RUN GRPC_HEALTH_PROBE_VERSION=v0.4.60 && \
     wget -qO/app/grpc_health_probe \
     https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
     chmod +x /app/grpc_health_probe
