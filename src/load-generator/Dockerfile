@@ -10,7 +10,7 @@ RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} xk6 build v1.6.1 \
     --with github.com/henrikrexed/henrikrexed-xk6-output-opentelemetry@v0.1.1 \
     --with github.com/Dynatrace/xk6-output-dynatrace@v0.0.0-20260512084219-1a8de5fabe60
 
-FROM alpine:3.22
+FROM alpine:3.24
 RUN apk --no-cache add ca-certificates && \
     adduser -D -u 12345 k6
 
