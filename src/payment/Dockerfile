@@ -1,4 +1,5 @@
-FROM rust:1.88-alpine AS builder
+# rustc >= 1.89 required: uuid 1.29.0 declares rust-version 1.89 (resolve-time MSRV gate)
+FROM rust:1.89-alpine AS builder
 
 RUN apk add --no-cache musl-dev protobuf-dev
 
