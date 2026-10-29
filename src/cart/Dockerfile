@@ -1,4 +1,4 @@
-FROM gradle:8.14.6-jdk21 AS builder
+FROM gradle:9.8.1-jdk21 AS builder
 
 WORKDIR /build
 
