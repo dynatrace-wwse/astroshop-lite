@@ -1,0 +1,171 @@
+# .trivyignore — CVE allowlist for the CI Trivy gate (ISI-6865, Phase 4 of ISI-6741).
+#
+# HOW THE GATE WORKS (.github/workflows/ci.yml → "Trivy CVE gate" step on each service):
+#   trivy image --scanners vuln --severity CRITICAL,HIGH --ignore-unfixed --exit-code 1
+#   with --trivyignores .trivyignore
+# The gate FAILS a PR when a build introduces a NEW *fixable* CRITICAL/HIGH that is not
+# listed below. The two filters that keep it from red-failing on the accepted baseline:
+#   1. --ignore-unfixed  → the upstream-unfixed tail (no FixedVersion) never gates. This is
+#      exactly the ISI-6778 carry rule ("carried iff no FixedVersion"), so the 15 CVEs in the
+#      ISI-6778 registry are auto-excluded and need no entry here (listed at the bottom for ref).
+#   2. this allowlist    → the fixable CRITICAL/HIGH already present on the v0.0.14 images at
+#      baseline time. These ARE actionable; they are accepted *temporarily* and tracked for
+#      burn-down in the Phase 5 follow-up. Each carries an expires: date so a suppression is
+#      never a silent perpetual mute — re-justify or (better) remove it by bumping the dep.
+#
+# CONVENTION: the comment line directly above each CVE id carries
+#   <CVE-ID>  severity:  pkg:  fixed:  svc:  expires:YYYY-MM-DD  justification:<why accepted>
+# KEEP IN SYNC: regenerate after any base/dep bump or re-scan (recipe in ISI-6865 thread).
+#   Source of truth for the upstream-unfixed tail: ISI-6778 carried-CVE registry.
+#
+# Format ref: https://trivy.dev/latest/docs/configuration/filtering/#trivyignore
+#
+# ===================================================================================
+# BASELINE — fixable CRITICAL/HIGH present on v0.0.14 images (vuln DB 2026-10-29).
+# 65 distinct CVEs (2 CRITICAL / 63 HIGH). Remediation: Phase 5 follow-up (dep/base bumps;
+# Dependabot — see .github/dependabot.yml — will auto-open most of these PRs).
+# ===================================================================================
+# CVE-2026-111497  severity:CRITICAL  pkg:brotli-libs  fixed:1.2.1-r0  svc:cart  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-111497
+# CVE-2026-33186  severity:CRITICAL  pkg:google.golang.org/grpc  fixed:1.79.3  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-33186
+# CVE-2025-47273  severity:HIGH  pkg:setuptools  fixed:78.1.1  svc:checkout  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2025-47273
+# CVE-2026-102276  severity:HIGH  pkg:brace-expansion  fixed:5.0.10, 3.0.7, 2.1.5, 1.1.19  svc:frontend  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-102276
+# CVE-2026-102278  severity:HIGH  pkg:brace-expansion  fixed:5.0.11, 3.0.8, 2.1.6, 1.1.20  svc:frontend  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-102278
+# CVE-2026-102554  severity:HIGH  pkg:com.google.guava:guava  fixed:33.7.2  svc:cart  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-102554
+# CVE-2026-111943  severity:HIGH  pkg:stdlib  fixed:1.26.10, 1.27.3  svc:load-generator-dynatrace,product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-111943
+# CVE-2026-114613  severity:HIGH  pkg:msgpack  fixed:1.2.3  svc:checkout  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-114613
+# CVE-2026-116587  severity:HIGH  pkg:github.com/go-jose/go-jose/v4  fixed:4.1.6  svc:cart,checkout,frontend,payment,product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-116587
+# CVE-2026-13149  severity:HIGH  pkg:brace-expansion  fixed:5.0.7, 1.1.16, 2.1.2  svc:frontend  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-13149
+# CVE-2026-14257  severity:HIGH  pkg:brace-expansion  fixed:5.0.8, 3.0.3, 2.1.3, 1.1.17  svc:frontend  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-14257
+# CVE-2026-24051  severity:HIGH  pkg:go.opentelemetry.io/otel/sdk  fixed:1.40.0  svc:load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-24051
+# CVE-2026-25679  severity:HIGH  pkg:stdlib  fixed:1.25.8, 1.26.1  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-25679
+# CVE-2026-25681  severity:HIGH  pkg:golang.org/x/net  fixed:0.55.0  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-25681
+# CVE-2026-27136  severity:HIGH  pkg:golang.org/x/net  fixed:0.55.0  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-27136
+# CVE-2026-27137  severity:HIGH  pkg:stdlib  fixed:1.26.1  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-27137
+# CVE-2026-27145  severity:HIGH  pkg:stdlib  fixed:1.25.11, 1.26.4  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-27145
+# CVE-2026-29181  severity:HIGH  pkg:go.opentelemetry.io/otel  fixed:1.41.0  svc:load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-29181
+# CVE-2026-32280  severity:HIGH  pkg:stdlib  fixed:1.25.9, 1.26.2  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-32280
+# CVE-2026-32281  severity:HIGH  pkg:stdlib  fixed:1.25.9, 1.26.2  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-32281
+# CVE-2026-32283  severity:HIGH  pkg:stdlib  fixed:1.25.9, 1.26.2  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-32283
+# CVE-2026-33671  severity:HIGH  pkg:picomatch  fixed:4.0.4, 3.0.2, 2.3.2  svc:frontend  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-33671
+# CVE-2026-33810  severity:HIGH  pkg:stdlib  fixed:1.26.2  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-33810
+# CVE-2026-33811  severity:HIGH  pkg:stdlib  fixed:1.25.10, 1.26.3  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-33811
+# CVE-2026-33814  severity:HIGH  pkg:golang.org/x/net,stdlib  fixed:0.53.0 | 1.25.10, 1.26.3  svc:load-generator,load-generator-dynatrace,product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-33814
+# CVE-2026-33818  severity:HIGH  pkg:stdlib  fixed:1.25.13, 1.26.6, 1.27.0-rc.3  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-33818
+# CVE-2026-39820  severity:HIGH  pkg:stdlib  fixed:1.25.10, 1.26.3  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-39820
+# CVE-2026-39821  severity:HIGH  pkg:golang.org/x/net,stdlib  fixed:0.55.0 | 1.25.13, 1.26.6, 1.27.0-rc.3  svc:load-generator,load-generator-dynatrace,product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-39821
+# CVE-2026-39822  severity:HIGH  pkg:stdlib  fixed:1.25.12, 1.26.5, 1.27.0-rc.2  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-39822
+# CVE-2026-39828  severity:HIGH  pkg:golang.org/x/crypto  fixed:0.52.0  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-39828
+# CVE-2026-39829  severity:HIGH  pkg:golang.org/x/crypto  fixed:0.52.0  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-39829
+# CVE-2026-39830  severity:HIGH  pkg:golang.org/x/crypto  fixed:0.52.0  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-39830
+# CVE-2026-39831  severity:HIGH  pkg:golang.org/x/crypto  fixed:0.52.0  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-39831
+# CVE-2026-39832  severity:HIGH  pkg:golang.org/x/crypto  fixed:0.52.0  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-39832
+# CVE-2026-39835  severity:HIGH  pkg:golang.org/x/crypto  fixed:0.52.0  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-39835
+# CVE-2026-39836  severity:HIGH  pkg:stdlib  fixed:1.25.10, 1.26.3  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-39836
+# CVE-2026-39883  severity:HIGH  pkg:go.opentelemetry.io/otel/sdk  fixed:1.43.0  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-39883
+# CVE-2026-42499  severity:HIGH  pkg:stdlib  fixed:1.25.10, 1.26.3  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-42499
+# CVE-2026-42504  severity:HIGH  pkg:stdlib  fixed:1.25.11, 1.26.4  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-42504
+# CVE-2026-42508  severity:HIGH  pkg:golang.org/x/crypto  fixed:0.52.0  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-42508
+# CVE-2026-46595  severity:HIGH  pkg:golang.org/x/crypto  fixed:0.52.0  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-46595
+# CVE-2026-46597  severity:HIGH  pkg:golang.org/x/crypto  fixed:0.52.0  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-46597
+# CVE-2026-46600  severity:HIGH  pkg:golang.org/x/net,stdlib  fixed:0.56.0 | 1.26.6, 1.27.0-rc.3  svc:load-generator,load-generator-dynatrace,product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-46600
+# CVE-2026-48815  severity:HIGH  pkg:sigstore  fixed:4.1.1  svc:frontend  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-48815
+# CVE-2026-56851  severity:HIGH  pkg:golang.org/x/text  fixed:0.41.0  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-56851
+# CVE-2026-56852  severity:HIGH  pkg:golang.org/x/text  fixed:0.39.0  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-56852
+# CVE-2026-56853  severity:HIGH  pkg:stdlib  fixed:1.25.13, 1.26.6, 1.27.0-rc.3  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-56853
+# CVE-2026-56854  severity:HIGH  pkg:golang.org/x/crypto  fixed:0.55.0  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-56854
+# CVE-2026-56858  severity:HIGH  pkg:stdlib  fixed:1.25.13, 1.26.6, 1.27.0-rc.3  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-56858
+# CVE-2026-56859  severity:HIGH  pkg:stdlib  fixed:1.25.13, 1.26.6, 1.27.0-rc.3  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-56859
+# CVE-2026-56860  severity:HIGH  pkg:stdlib  fixed:1.25.13, 1.26.6, 1.27.0-rc.3  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-56860
+# CVE-2026-56862  severity:HIGH  pkg:stdlib  fixed:1.25.13, 1.26.6, 1.27.0-rc.3  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-56862
+# CVE-2026-63209  severity:HIGH  pkg:github.com/klauspost/compress  fixed:1.18.7  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-63209
+# CVE-2026-69152  severity:HIGH  pkg:brace-expansion  fixed:1.1.18, 2.1.4, 3.0.6, 5.0.9  svc:frontend  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-69152
+# CVE-2026-69192  severity:HIGH  pkg:ip-address  fixed:10.3.1  svc:frontend  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-69192
+# CVE-2026-78667  severity:HIGH  pkg:stdlib  fixed:1.26.9, 1.27.2  svc:load-generator-dynatrace,product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-78667
+# CVE-2026-78669  severity:HIGH  pkg:golang.org/x/net,stdlib  fixed:0.60.0 | 1.26.9, 1.27.2  svc:load-generator,load-generator-dynatrace,product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-78669
+# CVE-2026-84304  severity:HIGH  pkg:google.golang.org/grpc  fixed:1.83.1  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-84304
+# CVE-2026-84445  severity:HIGH  pkg:google.golang.org/grpc  fixed:1.82.2, 1.83.2, 1.84.0-dev.0.20260825144003-d5a41119e0e3, 1.85.0-dev.0.20260825072537-93e31b48545e  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-84445
+# CVE-2026-9496  severity:HIGH  pkg:pacote  fixed:21.5.1  svc:frontend  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-9496
+# CVE-2026-97031  severity:HIGH  pkg:stdlib  fixed:1.26.9, 1.27.2  svc:load-generator-dynatrace,product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-97031
+# CVE-2026-97687  severity:HIGH  pkg:urllib3  fixed:2.8.0  svc:checkout  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-97687
+# CVE-2026-97689  severity:HIGH  pkg:urllib3  fixed:2.8.0  svc:checkout  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+CVE-2026-97689
+# GHSA-6v7p-g79w-8964  severity:HIGH  pkg:msgpack  fixed:1.2.1  svc:checkout  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+GHSA-6v7p-g79w-8964
+# GHSA-hrxh-6v49-42gf  severity:HIGH  pkg:google.golang.org/grpc  fixed:1.82.1  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
+GHSA-hrxh-6v49-42gf
+
+# ===================================================================================
+# REFERENCE ONLY — ISI-6778 carried upstream-unfixed tail (15 distinct HIGH, 0 CRIT).
+# These have NO upstream FixedVersion and are already excluded by --ignore-unfixed, so they
+# need no active entry. Listed here so this file stays legible against the ISI-6778 registry.
+# Exit condition: upstream vendor ships a fix (Debian trixie / go-jose / http-cache-semantics
+# / otel-contrib) → the CVE flips to fixable and the gate surfaces it for remediation.
+#   CVE-2026-76642 CVE-2026-78408 CVE-2026-78409 CVE-2026-78410  (util-linux src, trixie)
+#   CVE-2025-69720 (ncurses)  CVE-2026-16742 (systemd)  CVE-2026-54369 (libacl1)
+#   CVE-2026-58471 CVE-2026-58472 (wget)  CVE-2026-9538 (perl-base, Debian fix_deferred)
+#   CVE-2026-116587 (go-jose/v3 — NB: go-jose/v4 variant IS fixable, baselined above)
+#   CVE-2026-41567 CVE-2026-42306 CVE-2026-42602 (collector: docker/docker, azureauthext)
+#   CVE-2026-93748 (frontend: http-cache-semantics)
+# ===================================================================================
