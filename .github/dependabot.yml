@@ -1,0 +1,98 @@
+# Dependabot config — automated dependency updates for the polyglot repo (ISI-6865, Phase 4).
+# Keeps the v0.0.14 modernization from silently regressing. Policy:
+#   - Group minor + patch bumps into one PR per ecosystem (low-noise).
+#   - Majors get their own PR (reviewed individually — they can break builds).
+#   - Weekly cadence (Monday 06:00 UTC). open-pull-requests-limit caps churn.
+# Co-author trailer is added by the service owner on merge, not by Dependabot.
+version: 2
+
+updates:
+  # ---- Go modules ----
+  - package-ecosystem: gomod
+    directory: /src/product-catalog
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+    open-pull-requests-limit: 5
+    groups:
+      go-minor-patch:
+        update-types: [minor, patch]
+
+  # ---- npm (frontend) ----
+  - package-ecosystem: npm
+    directory: /src/frontend
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+    open-pull-requests-limit: 5
+    groups:
+      npm-minor-patch:
+        update-types: [minor, patch]
+
+  # ---- Cargo (payment) ----
+  - package-ecosystem: cargo
+    directory: /src/payment
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+    open-pull-requests-limit: 5
+    groups:
+      cargo-minor-patch:
+        update-types: [minor, patch]
+
+  # ---- Gradle/Maven (cart) ----
+  - package-ecosystem: gradle
+    directory: /src/cart
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+    open-pull-requests-limit: 5
+    groups:
+      gradle-minor-patch:
+        update-types: [minor, patch]
+
+  # ---- pip (checkout) ----
+  - package-ecosystem: pip
+    directory: /src/checkout
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+    open-pull-requests-limit: 5
+    groups:
+      pip-minor-patch:
+        update-types: [minor, patch]
+
+  # ---- Docker base images (one entry per Dockerfile dir) ----
+  - package-ecosystem: docker
+    directories:
+      - /src/frontend
+      - /src/product-catalog
+      - /src/cart
+      - /src/checkout
+      - /src/payment
+      - /src/load-generator
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+    open-pull-requests-limit: 5
+    groups:
+      docker-minor-patch:
+        update-types: [minor, patch]
+
+  # ---- GitHub Actions ----
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+    open-pull-requests-limit: 5
+    groups:
+      actions-minor-patch:
+        update-types: [minor, patch]

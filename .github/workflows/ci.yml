@@ -44,6 +44,16 @@ jobs:
       - name: Docker build
         run: docker build -t product-catalog:ci .
 
+      - name: Trivy CVE gate (fail on new fixable CRITICAL/HIGH)
+        uses: aquasecurity/trivy-action@v0.36.0  # ed142fd0673e
+        with:
+          image-ref: product-catalog:ci
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+          trivyignores: .trivyignore
+
   cart:
     name: Cart (Java)
     runs-on: ubuntu-latest
@@ -65,6 +75,16 @@ jobs:
 
       - name: Docker build
         run: docker build -t cart:ci .
+
+      - name: Trivy CVE gate (fail on new fixable CRITICAL/HIGH)
+        uses: aquasecurity/trivy-action@v0.36.0  # ed142fd0673e
+        with:
+          image-ref: cart:ci
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+          trivyignores: .trivyignore
 
   payment:
     name: Payment (Rust)
@@ -94,6 +114,16 @@ jobs:
 
       - name: Docker build
         run: docker build -t payment:ci .
+
+      - name: Trivy CVE gate (fail on new fixable CRITICAL/HIGH)
+        uses: aquasecurity/trivy-action@v0.36.0  # ed142fd0673e
+        with:
+          image-ref: payment:ci
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+          trivyignores: .trivyignore
 
   checkout:
     name: Checkout (Python)
@@ -125,6 +155,16 @@ jobs:
       - name: Docker build
         run: docker build -t checkout:ci .
 
+      - name: Trivy CVE gate (fail on new fixable CRITICAL/HIGH)
+        uses: aquasecurity/trivy-action@v0.36.0  # ed142fd0673e
+        with:
+          image-ref: checkout:ci
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+          trivyignores: .trivyignore
+
   frontend:
     name: Frontend (Node.js)
     runs-on: ubuntu-latest
@@ -149,6 +189,16 @@ jobs:
       - name: Docker build
         run: docker build -t frontend:ci .
 
+      - name: Trivy CVE gate (fail on new fixable CRITICAL/HIGH)
+        uses: aquasecurity/trivy-action@v0.36.0  # ed142fd0673e
+        with:
+          image-ref: frontend:ci
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+          trivyignores: .trivyignore
+
   load-generator:
     name: Load Generator (k6)
     runs-on: ubuntu-latest
@@ -167,3 +217,23 @@ jobs:
 
       - name: Docker build (Dynatrace)
         run: docker build -f Dockerfile.dynatrace -t load-generator-dynatrace:ci .
+
+      - name: Trivy CVE gate — OTel (fail on new fixable CRITICAL/HIGH)
+        uses: aquasecurity/trivy-action@v0.36.0  # ed142fd0673e
+        with:
+          image-ref: load-generator:ci
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+          trivyignores: .trivyignore
+
+      - name: Trivy CVE gate — Dynatrace (fail on new fixable CRITICAL/HIGH)
+        uses: aquasecurity/trivy-action@v0.36.0  # ed142fd0673e
+        with:
+          image-ref: load-generator-dynatrace:ci
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+          trivyignores: .trivyignore
