@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 export async function POST(request) {
   const grpc = require('../../../../lib/grpc-client');
   const body = await request.json();
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const userId = cookieStore.get('userId')?.value || 'default-user';
 
   try {
