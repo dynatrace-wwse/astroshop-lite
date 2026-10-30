@@ -11,7 +11,7 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_PREFIX: ghcr.io/henrikrexed/opentelemetry-demo-light
+  IMAGE_PREFIX: ghcr.io/dynatrace-wwse/astroshop-lite
 
 jobs:
   build-and-push:
@@ -98,3 +98,15 @@ jobs:
         with:
           sarif_file: trivy-${{ matrix.service }}.sarif
           category: trivy-${{ matrix.service }}
+
+      # Gate: a published image must carry no fixable CRITICAL/HIGH. The image is
+      # already pushed at this point, so a red run means "do not pin this tag".
+      - name: Trivy gate (fixable CRITICAL/HIGH)
+        uses: aquasecurity/trivy-action@v0.36.0  # ed142fd0673e
+        with:
+          image-ref: ${{ env.IMAGE_PREFIX }}/${{ matrix.service }}:${{ steps.meta.outputs.version }}
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+          trivyignores: .trivyignore

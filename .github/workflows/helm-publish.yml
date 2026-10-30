@@ -1,19 +1,16 @@
 name: Helm — Package & Push OCI
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "helm/opentelemetry-demo-light/**"
-  release:
-    types: [published]
+  # Manual only: the framework vendors the chart, so nothing consumes a published
+  # OCI chart yet. Upstream published on every main push.
+  workflow_dispatch:
 
 permissions:
   contents: read
   packages: write
 
 env:
-  CHART_REPO: ghcr.io/henrikrexed/charts
+  CHART_REPO: ghcr.io/dynatrace-wwse/astroshop-lite/charts
 
 jobs:
   helm-publish:
