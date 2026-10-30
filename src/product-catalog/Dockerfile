@@ -14,7 +14,7 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /product-catalog .
 
 # Download grpc_health_probe
-RUN GRPC_HEALTH_PROBE_VERSION=v0.4.60 && \
+RUN GRPC_HEALTH_PROBE_VERSION=v0.4.61 && \
     wget -qO/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
     chmod +x /grpc_health_probe
 

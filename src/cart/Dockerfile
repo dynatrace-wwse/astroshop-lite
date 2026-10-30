@@ -12,7 +12,7 @@ RUN wget -qO/opentelemetry-javaagent.jar \
     https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.33.1/opentelemetry-javaagent.jar
 
 # Download grpc_health_probe
-RUN GRPC_HEALTH_PROBE_VERSION=v0.4.60 &&     wget -qO/grpc_health_probe     https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 &&     chmod +x /grpc_health_probe
+RUN GRPC_HEALTH_PROBE_VERSION=v0.4.61 &&     wget -qO/grpc_health_probe     https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 &&     chmod +x /grpc_health_probe
 
 FROM eclipse-temurin:24-jre-alpine
 
