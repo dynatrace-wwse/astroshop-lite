@@ -41,8 +41,6 @@ CVE-2026-102554
 CVE-2026-111943
 # CVE-2026-114613  severity:HIGH  pkg:msgpack  fixed:1.2.3  svc:checkout  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
 CVE-2026-114613
-# CVE-2026-116587  severity:HIGH  pkg:github.com/go-jose/go-jose/v4  fixed:4.1.6  svc:cart,checkout,frontend,payment,product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
-CVE-2026-116587
 # CVE-2026-13149  severity:HIGH  pkg:brace-expansion  fixed:5.0.7, 1.1.16, 2.1.2  svc:frontend  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
 CVE-2026-13149
 # CVE-2026-14257  severity:HIGH  pkg:brace-expansion  fixed:5.0.8, 3.0.3, 2.1.3, 1.1.17  svc:frontend  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
@@ -165,7 +163,7 @@ GHSA-hrxh-6v49-42gf
 #   CVE-2026-76642 CVE-2026-78408 CVE-2026-78409 CVE-2026-78410  (util-linux src, trixie)
 #   CVE-2025-69720 (ncurses)  CVE-2026-16742 (systemd)  CVE-2026-54369 (libacl1)
 #   CVE-2026-58471 CVE-2026-58472 (wget)  CVE-2026-9538 (perl-base, Debian fix_deferred)
-#   CVE-2026-116587 (go-jose/v3 — NB: go-jose/v4 variant IS fixable, baselined above)
+#   CVE-2026-116587 (go-jose/v3 — upstream-unfixed; the go-jose/v4 variant was fixable and is remediated via ISI-6885, grpc_health_probe v0.4.61)
 #   CVE-2026-41567 CVE-2026-42306 CVE-2026-42602 (collector: docker/docker, azureauthext)
 #   CVE-2026-93748 (frontend: http-cache-semantics)
 # ===================================================================================

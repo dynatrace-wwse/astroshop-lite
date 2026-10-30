@@ -15,7 +15,7 @@ COPY . .
 RUN python -m grpc_tools.protoc -Iproto --python_out=. --grpc_python_out=. proto/demo.proto
 
 # Download grpc_health_probe
-RUN GRPC_HEALTH_PROBE_VERSION=v0.4.60 && \
+RUN GRPC_HEALTH_PROBE_VERSION=v0.4.61 && \
     wget -qO/app/grpc_health_probe \
     https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
     chmod +x /app/grpc_health_probe

@@ -30,7 +30,7 @@ COPY --from=builder /app/instrumentation.js ./instrumentation.js
 
 # grpc_health_probe for health checks
 RUN wget -qO/app/grpc_health_probe \
-    https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.4.60/grpc_health_probe-linux-amd64 && \
+    https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.4.61/grpc_health_probe-linux-amd64 && \
     chmod +x /app/grpc_health_probe
 
 ENV PORT=8080
