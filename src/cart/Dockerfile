@@ -14,9 +14,11 @@ RUN wget -qO/opentelemetry-javaagent.jar \
 # Download grpc_health_probe
 RUN GRPC_HEALTH_PROBE_VERSION=v0.4.61 &&     wget -qO/grpc_health_probe     https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 &&     chmod +x /grpc_health_probe
 
-FROM eclipse-temurin:24-jre-alpine
+FROM eclipse-temurin:25-jre-alpine
 
-# CVE gate (ISI-6873): temurin pins a stale alpine 3.22 snapshot; pull patched packages
+# CVE gate (ISI-6873/ISI-6883): temurin pins a stale alpine snapshot; pull patched packages.
+# Base bumped 24-jre-alpine (alpine 3.22, brotli-libs 1.1.1-r0) -> 25-jre-alpine (alpine 3.24,
+# brotli-libs 1.2.1-r0) to clear CVE-2026-111497; apk upgrade alone could not (3.22 repo caps at 1.1.1-r0).
 RUN apk upgrade --no-cache
 
 WORKDIR /app
