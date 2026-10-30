@@ -18,6 +18,9 @@ jobs:
     name: ${{ matrix.service }}
     runs-on: ubuntu-latest
     strategy:
+      # One flaky network fetch (sum.golang.org, 0.2.0 attempt 1) must not cancel
+      # the other six services mid-push.
+      fail-fast: false
       matrix:
         include:
           - service: frontend
