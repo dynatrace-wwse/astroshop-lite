@@ -1,4 +1,7 @@
 FROM gradle:9.8.1-jdk21 AS builder
+# Set by BuildKit per target platform; picks the matching grpc_health_probe binary
+# (a hard-coded linux-amd64 one fails with "exec format error" on arm64).
+ARG TARGETARCH=amd64
 
 WORKDIR /build
 
@@ -12,7 +15,7 @@ RUN wget -qO/opentelemetry-javaagent.jar \
     https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.33.1/opentelemetry-javaagent.jar
 
 # Download grpc_health_probe
-RUN GRPC_HEALTH_PROBE_VERSION=v0.4.61 &&     wget -qO/grpc_health_probe     https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 &&     chmod +x /grpc_health_probe
+RUN GRPC_HEALTH_PROBE_VERSION=v0.4.61 &&     wget -qO/grpc_health_probe     https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-${TARGETARCH} &&     chmod +x /grpc_health_probe
 
 FROM eclipse-temurin:25-jre-alpine
 
@@ -28,6 +31,8 @@ COPY --from=builder /opentelemetry-javaagent.jar /app/opentelemetry-javaagent.ja
 COPY --from=builder /grpc_health_probe /app/grpc_health_probe
 
 ENV JAVA_TOOL_OPTIONS="-javaagent:/app/opentelemetry-javaagent.jar -Xmx128m"
+
+USER 65532:65532
 
 EXPOSE 7070
 

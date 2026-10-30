@@ -52,7 +52,10 @@ Common OTel environment variables injected into every app service
 - name: POSTGRES_USER
   value: {{ .Values.postgres.user | quote }}
 - name: POSTGRES_PASSWORD
-  value: {{ .Values.postgres.password | quote }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-postgres
+      key: password
 - name: VALKEY_ADDR
   value: "{{ .Release.Name }}-valkey:6379"
 {{- end }}
@@ -63,4 +66,21 @@ Usage: {{ include "otel-demo.image" (dict "img" .Values.images.frontend) }}
 */}}
 {{- define "otel-demo.image" -}}
 {{ .img.repository }}:{{ .img.tag }}
+{{- end }}
+
+{{/*
+Postgres password: postgres.password when set, else the one already in the
+release's Secret (kept stable across upgrades), else a fresh random one.
+*/}}
+{{- define "otel-demo.postgresPassword" -}}
+{{- if .Values.postgres.password -}}
+{{ .Values.postgres.password }}
+{{- else -}}
+{{- $existing := lookup "v1" "Secret" .Release.Namespace (printf "%s-postgres" .Release.Name) -}}
+{{- if and $existing $existing.data (hasKey $existing.data "password") -}}
+{{ index $existing.data "password" | b64dec }}
+{{- else -}}
+{{ randAlphaNum 24 }}
+{{- end -}}
+{{- end -}}
 {{- end }}

@@ -33,7 +33,7 @@ postgres:
   image: postgres:17-alpine
   replicas: 1
   user: otel
-  password: otel
+  password: ""   # empty: a random password is generated into Secret <release>-postgres and kept across upgrades
   resources:
     limits:
       memory: 80Mi
@@ -48,6 +48,19 @@ valkey:
       memory: 20Mi
     requests:
       memory: 10Mi
+
+# Security context applied to every application service (frontend, product-catalog,
+# cart, checkout, payment, load-generator). None of the images needs root.
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
 
 # Per-service configuration
 images:
@@ -98,20 +111,23 @@ cart:
   replicas: 1
   port: 7070
   jvmOpts: "-Xmx128m"
+  # 200Mi OOMKilled on start (heap 128m + OTel Java agent + metaspace); steady state
+  # measured at ~216Mi working set under the default 5-VU load.
   resources:
     limits:
-      memory: 200Mi
+      memory: 384Mi
     requests:
-      memory: 100Mi
+      memory: 256Mi
 
 checkout:
   replicas: 1
   port: 5050
+  # 50Mi left no headroom: measured 46Mi working set under the default 5-VU load.
   resources:
     limits:
-      memory: 50Mi
+      memory: 128Mi
     requests:
-      memory: 25Mi
+      memory: 64Mi
 
 payment:
   replicas: 1

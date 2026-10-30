@@ -41,27 +41,13 @@
 #     next16/react19 lockfile regen (PR#26 — brace-expansion >=2.1.6; picomatch/sigstore/
 #     ip-address/pacote dropped from package-lock.json). Removed the 9 frontend suppressions
 #     (brace-expansion ×5, picomatch, sigstore, ip-address, pacote).
-# Remaining: 9 distinct CVEs (0 CRITICAL / 9 HIGH).
+# Remaining: 0 distinct CVEs.
+#   2026-10-30 (astroshop-lite import): re-scanned every image with Trivy 0.69.3, no ignore
+#     file. product-catalog:0.0.16 carries none of CVE-2026-33814/39821/46600/78669 any more
+#     (cleared by the golang:1.26.10 builder bump). The five checkout entries came from pip's
+#     own vendored urllib3/msgpack/setuptools, not from requirements.txt; the checkout image now
+#     uninstalls pip after the build, so they are gone. All nine suppressions removed.
 # ===================================================================================
-# CVE-2025-47273  severity:HIGH  pkg:setuptools  fixed:78.1.1  svc:checkout  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
-CVE-2025-47273
-# CVE-2026-114613  severity:HIGH  pkg:msgpack  fixed:1.2.3  svc:checkout  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
-CVE-2026-114613
-# CVE-2026-33814  severity:HIGH  pkg:golang.org/x/net,stdlib  fixed:0.53.0 | 1.25.10, 1.26.3  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
-CVE-2026-33814
-# CVE-2026-39821  severity:HIGH  pkg:golang.org/x/net,stdlib  fixed:0.55.0 | 1.25.13, 1.26.6, 1.27.0-rc.3  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
-CVE-2026-39821
-# CVE-2026-46600  severity:HIGH  pkg:golang.org/x/net,stdlib  fixed:0.56.0 | 1.26.6, 1.27.0-rc.3  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
-CVE-2026-46600
-# CVE-2026-78669  severity:HIGH  pkg:golang.org/x/net,stdlib  fixed:0.60.0 | 1.26.9, 1.27.2  svc:product-catalog  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
-CVE-2026-78669
-# CVE-2026-97687  severity:HIGH  pkg:urllib3  fixed:2.8.0  svc:checkout  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
-CVE-2026-97687
-# CVE-2026-97689  severity:HIGH  pkg:urllib3  fixed:2.8.0  svc:checkout  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
-CVE-2026-97689
-# GHSA-6v7p-g79w-8964  severity:HIGH  pkg:msgpack  fixed:1.2.1  svc:checkout  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
-GHSA-6v7p-g79w-8964
-
 # ===================================================================================
 # REFERENCE ONLY — ISI-6778 carried upstream-unfixed tail (15 distinct HIGH, 0 CRIT).
 # These have NO upstream FixedVersion and are already excluded by --ignore-unfixed, so they

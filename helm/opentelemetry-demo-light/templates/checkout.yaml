@@ -27,8 +27,12 @@ spec:
       labels:
         {{- include "otel-demo.selectorLabels" (dict "name" "checkout" "root" .) | nindent 8 }}
     spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: checkout
+          securityContext:
+            {{- toYaml .Values.containerSecurityContext | nindent 12 }}
           image: {{ include "otel-demo.image" (dict "img" .Values.images.checkout) }}
           imagePullPolicy: {{ .Values.images.checkout.pullPolicy }}
           ports:
@@ -42,7 +46,9 @@ spec:
           resources:
             {{- toYaml .Values.checkout.resources | nindent 12 }}
           readinessProbe:
-            exec:
-              command: ["/app/grpc_health_probe", "-addr=localhost:{{ .Values.checkout.port }}"]
+            # Native kubelet gRPC probe: arch-independent (the bundled grpc_health_probe
+            # binary is linux-amd64 only and fails with "exec format error" on arm64).
+            grpc:
+              port: {{ .Values.checkout.port }}
             initialDelaySeconds: 10
             periodSeconds: 5
