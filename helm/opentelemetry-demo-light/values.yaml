@@ -33,7 +33,7 @@ postgres:
   image: postgres:17-alpine
   replicas: 1
   user: otel
-  password: otel
+  password: ""   # empty: a random password is generated into Secret <release>-postgres and kept across upgrades
   resources:
     limits:
       memory: 80Mi
