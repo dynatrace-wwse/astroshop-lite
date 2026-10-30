@@ -1,3 +1,15 @@
+# AstroShop Lite
+
+> **AstroShop Lite** is the Dynatrace enablement import of **[OpenTelemetry Demo Light](https://github.com/henrikrexed/opentelemetry-demo-light)**,
+> created and maintained by **[Henrik Rexed](https://github.com/henrikrexed)**. All credit for the
+> design, the five services and their instrumentation goes to Henrik; this copy carries the full
+> upstream history. Changes made here for the enablement framework (arm64 readiness, non-root
+> security context, cart memory, checkout image hygiene) are offered back upstream.
+>
+> In a Dynatrace enablement Codespace: `deployApp astroshop-lite`.
+
+---
+
 # OpenTelemetry Demo Light
 
 A lightweight fork of the [opentelemetry-demo](https://github.com/open-telemetry/opentelemetry-demo): **5 microservices in 5 languages**, no bundled backends, runs in a GitHub Codespace under 1.5GB RAM.
