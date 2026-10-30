@@ -7,6 +7,13 @@
 > security context, cart memory, checkout image hygiene) are offered back upstream.
 >
 > In a Dynatrace enablement Codespace: `deployApp astroshop-lite`.
+>
+> **Images.** This repo builds and publishes its own images, multi-arch (amd64 + arm64), at
+> `ghcr.io/dynatrace-wwse/astroshop-lite/<service>:<version>`. A `v<version>` tag runs
+> `.github/workflows/release.yml`, which builds, pushes, Trivy-gates (no fixable CRITICAL/HIGH)
+> and attaches SBOMs to the GitHub release. Versioning starts at **0.2.0**, the first release built
+> here, above every upstream image tag up to 0.0.16. The image tag carries no `v`; the git tag does,
+> following upstream.
 
 ---
 
