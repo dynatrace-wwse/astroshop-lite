@@ -16,6 +16,14 @@ repositories {
 }
 
 dependencies {
+    // Security pin: force transitive com.google.guava:guava (pulled in via gRPC) to a patched
+    // release. Cart has no direct guava usage. CVE-2026-102554 (HIGH) fixed in 33.7.2 (ISI-6883).
+    constraints {
+        implementation('com.google.guava:guava:33.7.2-jre') {
+            because 'CVE-2026-102554 — transitive via gRPC'
+        }
+    }
+
     // gRPC
     implementation 'io.grpc:grpc-netty-shaded:1.85.1'
     implementation 'io.grpc:grpc-protobuf:1.85.1'
