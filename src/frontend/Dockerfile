@@ -10,6 +10,9 @@ RUN mkdir -p public
 RUN npm run build
 
 FROM node:25-alpine
+# Set by BuildKit per target platform; picks the matching grpc_health_probe binary
+# (a hard-coded linux-amd64 one fails with "exec format error" on arm64).
+ARG TARGETARCH=amd64
 
 # CVE gate (ISI-6873): pull patched alpine packages (openssl CVE-2026-14456/45447)
 RUN apk upgrade --no-cache     && rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
@@ -30,11 +33,13 @@ COPY --from=builder /app/instrumentation.js ./instrumentation.js
 
 # grpc_health_probe for health checks
 RUN wget -qO/app/grpc_health_probe \
-    https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.4.61/grpc_health_probe-linux-amd64 && \
+    https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.4.61/grpc_health_probe-linux-${TARGETARCH} && \
     chmod +x /app/grpc_health_probe
 
 ENV PORT=8080
 ENV HOSTNAME="0.0.0.0"
+
+USER 65532:65532
 
 EXPOSE 8080
 

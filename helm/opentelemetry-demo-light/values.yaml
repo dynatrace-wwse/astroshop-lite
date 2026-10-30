@@ -49,6 +49,19 @@ valkey:
     requests:
       memory: 10Mi
 
+# Security context applied to every application service (frontend, product-catalog,
+# cart, checkout, payment, load-generator). None of the images needs root.
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
+
 # Per-service configuration
 images:
   frontend:
@@ -98,11 +111,13 @@ cart:
   replicas: 1
   port: 7070
   jvmOpts: "-Xmx128m"
+  # 200Mi OOMKilled on start (heap 128m + OTel Java agent + metaspace); steady state
+  # measured at ~216Mi working set under the default 5-VU load.
   resources:
     limits:
-      memory: 200Mi
+      memory: 384Mi
     requests:
-      memory: 100Mi
+      memory: 256Mi
 
 checkout:
   replicas: 1

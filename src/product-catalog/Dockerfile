@@ -1,4 +1,7 @@
 FROM golang:1.26.10-alpine AS builder
+# Set by BuildKit per target platform; picks the matching grpc_health_probe binary
+# (a hard-coded linux-amd64 one fails with "exec format error" on arm64).
+ARG TARGETARCH=amd64
 
 ENV GOTOOLCHAIN=auto
 
@@ -15,7 +18,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /product-catalog .
 
 # Download grpc_health_probe
 RUN GRPC_HEALTH_PROBE_VERSION=v0.4.61 && \
-    wget -qO/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
+    wget -qO/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-${TARGETARCH} && \
     chmod +x /grpc_health_probe
 
 FROM scratch

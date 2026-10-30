@@ -28,6 +28,9 @@ spec:
       labels:
         {{- include "otel-demo.selectorLabels" (dict "name" "valkey" "root" .) | nindent 8 }}
     spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: valkey
           image: {{ .Values.valkey.image }}
