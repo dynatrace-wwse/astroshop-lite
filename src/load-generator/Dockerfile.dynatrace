@@ -2,12 +2,24 @@ FROM --platform=$BUILDPLATFORM golang:1.26.10-alpine AS builder
 ARG TARGETPLATFORM
 ARG TARGETOS
 ARG TARGETARCH
+# Force the build toolchain to 1.26.10 so the embedded Go stdlib carries the
+# patched runtime (GOTOOLCHAIN=auto would otherwise honour the generated
+# `go 1.26.0` directive and compile with vulnerable 1.26.0 stdlib). ISI-6881.
+ENV GOTOOLCHAIN=go1.26.10
 WORKDIR /build
 RUN apk --no-cache add git
 RUN CGO_ENABLED=0 go install go.k6.io/xk6/cmd/xk6@v1.4.12
+# --replace pins bump transitive deps to CVE-fixed versions (ISI-6881):
+#   grpc 1.83.2 (CVE-2026-33186 CRIT +84304/84445/GHSA-hrxh), x/net 0.60.0
+#   (CVE-2026-25681/27136 + x/net side of 33814/39821/46600/78669),
+#   klauspost/compress 1.18.7 (CVE-2026-63209). x/crypto/x/text/otel already
+#   resolve to fixed versions via MVS and need no pin.
 RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} xk6 build v1.6.1 \
     --output /k6 \
-    --with github.com/Dynatrace/xk6-output-dynatrace@v0.0.0-20260512084219-1a8de5fabe60
+    --with github.com/Dynatrace/xk6-output-dynatrace@v0.0.0-20260512084219-1a8de5fabe60 \
+    --replace google.golang.org/grpc=google.golang.org/grpc@v1.83.2 \
+    --replace golang.org/x/net=golang.org/x/net@v0.60.0 \
+    --replace github.com/klauspost/compress=github.com/klauspost/compress@v1.18.7
 
 FROM alpine:3.24
 RUN apk --no-cache add ca-certificates && \
