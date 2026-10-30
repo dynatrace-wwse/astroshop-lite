@@ -28,18 +28,20 @@
 #   2026-10-30 (ISI-6867): product-catalog + load-generator-dynatrace Go builders bumped
 #     golang:1.25-alpine -> golang:1.26.10-alpine. Cleared 22 stdlib CVEs (toolchain was
 #     1.26.0 via GOTOOLCHAIN=auto; 1.26.10 fixes all stdlib advisories ≤1.26.10). -> 43 remain.
-# Remaining: 43 distinct CVEs (2 CRITICAL / 41 HIGH).
+#   2026-10-30 (ISI-6881): load-generator + load-generator-dynatrace xk6 Go deps pinned
+#     (grpc 1.83.2, x/net 0.60.0, klauspost 1.18.7; x/crypto/x/text/otel resolve safe via MVS)
+#     and toolchain forced to go1.26.10. Cleared ~23 load-gen CVEs incl. CRITICAL CVE-2026-33186
+#     (grpc). The 4 mixed x/net+stdlib CVEs (33814/39821/46600/78669) stay — still carried by
+#     product-catalog — with svc: narrowed to product-catalog only.
+#   2026-10-30 (ISI-6883): cart brotli-libs + guava cleared (CVE-2026-111497 CRITICAL, CVE-2026-102554).
+# Remaining: 18 distinct CVEs (0 CRITICAL / 18 HIGH).
 # ===================================================================================
-# CVE-2026-111497  severity:CRITICAL  pkg:brotli-libs  fixed:1.2.1-r0  svc:cart  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
-CVE-2026-111497
 # CVE-2025-47273  severity:HIGH  pkg:setuptools  fixed:78.1.1  svc:checkout  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
 CVE-2025-47273
 # CVE-2026-102276  severity:HIGH  pkg:brace-expansion  fixed:5.0.10, 3.0.7, 2.1.5, 1.1.19  svc:frontend  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
 CVE-2026-102276
 # CVE-2026-102278  severity:HIGH  pkg:brace-expansion  fixed:5.0.11, 3.0.8, 2.1.6, 1.1.20  svc:frontend  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
 CVE-2026-102278
-# CVE-2026-102554  severity:HIGH  pkg:com.google.guava:guava  fixed:33.7.2  svc:cart  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
-CVE-2026-102554
 # CVE-2026-114613  severity:HIGH  pkg:msgpack  fixed:1.2.3  svc:checkout  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
 CVE-2026-114613
 # CVE-2026-13149  severity:HIGH  pkg:brace-expansion  fixed:5.0.7, 1.1.16, 2.1.2  svc:frontend  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
