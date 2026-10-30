@@ -122,11 +122,12 @@ cart:
 checkout:
   replicas: 1
   port: 5050
+  # 50Mi left no headroom: measured 46Mi working set under the default 5-VU load.
   resources:
     limits:
-      memory: 50Mi
+      memory: 128Mi
     requests:
-      memory: 25Mi
+      memory: 64Mi
 
 payment:
   replicas: 1
