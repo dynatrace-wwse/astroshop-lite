@@ -2,11 +2,14 @@ use std::env;
 
 use opentelemetry::global;
 use opentelemetry::metrics::Counter;
-use opentelemetry::trace::{Span, SpanKind, Status, Tracer, TracerProvider};
+use opentelemetry::propagation::Extractor;
+use opentelemetry::trace::{Span, SpanKind, Status, TraceContextExt, Tracer, TracerProvider};
+use opentelemetry::Context;
 use opentelemetry::KeyValue;
 use opentelemetry_otlp::{MetricExporter, SpanExporter, WithExportConfig};
 use opentelemetry_sdk::metrics::SdkMeterProvider;
 use opentelemetry_sdk::trace::{SdkTracerProvider, SdkTracer};
+use opentelemetry_sdk::propagation::TraceContextPropagator;
 use opentelemetry_sdk::Resource;
 use tonic::{transport::Server, Request, Response};
 use uuid::Uuid;
@@ -17,6 +20,26 @@ pub mod oteldemo {
 
 use oteldemo::payment_service_server::{PaymentService, PaymentServiceServer};
 use oteldemo::{ProcessPaymentRequest, ProcessPaymentResponse};
+
+/// Reads W3C `traceparent`/`tracestate` from the incoming gRPC metadata so
+/// payment's spans join the caller's trace instead of starting new ones.
+struct MetadataExtractor<'a>(&'a tonic::metadata::MetadataMap);
+
+impl Extractor for MetadataExtractor<'_> {
+    fn get(&self, key: &str) -> Option<&str> {
+        self.0.get(key).and_then(|v| v.to_str().ok())
+    }
+
+    fn keys(&self) -> Vec<&str> {
+        self.0
+            .keys()
+            .filter_map(|k| match k {
+                tonic::metadata::KeyRef::Ascii(k) => Some(k.as_str()),
+                tonic::metadata::KeyRef::Binary(_) => None,
+            })
+            .collect()
+    }
+}
 
 pub struct PaymentServiceImpl {
     tracer: SdkTracer,
@@ -50,13 +73,19 @@ impl PaymentService for PaymentServiceImpl {
         &self,
         request: Request<ProcessPaymentRequest>,
     ) -> Result<Response<ProcessPaymentResponse>, tonic::Status> {
+        let parent_cx = global::get_text_map_propagator(|prop| {
+            prop.extract(&MetadataExtractor(request.metadata()))
+        });
         let req = request.into_inner();
 
-        let mut process_span = self
+        let process_span = self
             .tracer
             .span_builder("payment.process")
             .with_kind(SpanKind::Server)
-            .start(&self.tracer);
+            .start_with_context(&self.tracer, &parent_cx);
+        // Children (validate, charge) are parented on payment.process.
+        let process_cx = Context::current_with_span(process_span);
+        let process_span = process_cx.span();
 
         let amount_cents = req.amount.as_ref().map_or(0, |m| m.amount_cents);
         let card_number = req
@@ -81,7 +110,7 @@ impl PaymentService for PaymentServiceImpl {
                 .tracer
                 .span_builder("payment.validate")
                 .with_kind(SpanKind::Internal)
-                .start(&self.tracer);
+                .start_with_context(&self.tracer, &process_cx);
 
             if amount_cents <= 0 {
                 validate_span.set_status(Status::Error {
@@ -126,7 +155,7 @@ impl PaymentService for PaymentServiceImpl {
                 .tracer
                 .span_builder("payment.charge")
                 .with_kind(SpanKind::Internal)
-                .start(&self.tracer);
+                .start_with_context(&self.tracer, &process_cx);
 
             let tx_id = Uuid::new_v4().to_string();
             charge_span.set_attribute(KeyValue::new(
@@ -209,6 +238,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let tracer_provider = init_tracer_provider();
     let tracer = tracer_provider.tracer("payment");
+    global::set_text_map_propagator(TraceContextPropagator::new());
     global::set_tracer_provider(tracer_provider);
 
     let meter_provider = init_meter_provider();
