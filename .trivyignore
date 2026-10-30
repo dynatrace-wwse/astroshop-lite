@@ -30,8 +30,6 @@
 #     1.26.0 via GOTOOLCHAIN=auto; 1.26.10 fixes all stdlib advisories ≤1.26.10). -> 43 remain.
 # Remaining: 43 distinct CVEs (2 CRITICAL / 41 HIGH).
 # ===================================================================================
-# CVE-2026-111497  severity:CRITICAL  pkg:brotli-libs  fixed:1.2.1-r0  svc:cart  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
-CVE-2026-111497
 # CVE-2026-33186  severity:CRITICAL  pkg:google.golang.org/grpc  fixed:1.79.3  svc:load-generator,load-generator-dynatrace  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
 CVE-2026-33186
 # CVE-2025-47273  severity:HIGH  pkg:setuptools  fixed:78.1.1  svc:checkout  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
@@ -40,8 +38,6 @@ CVE-2025-47273
 CVE-2026-102276
 # CVE-2026-102278  severity:HIGH  pkg:brace-expansion  fixed:5.0.11, 3.0.8, 2.1.6, 1.1.20  svc:frontend  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
 CVE-2026-102278
-# CVE-2026-102554  severity:HIGH  pkg:com.google.guava:guava  fixed:33.7.2  svc:cart  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
-CVE-2026-102554
 # CVE-2026-114613  severity:HIGH  pkg:msgpack  fixed:1.2.3  svc:checkout  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
 CVE-2026-114613
 # CVE-2026-13149  severity:HIGH  pkg:brace-expansion  fixed:5.0.7, 1.1.16, 2.1.2  svc:frontend  expires:2027-01-27  justification:pre-existing v0.0.14 baseline, remediation tracked in Phase 5 follow-up
